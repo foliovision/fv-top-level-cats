@@ -136,24 +136,42 @@ add_filter( 'post_link_category', 'fv_top_level_cats_post_link_category_top_leve
 
 
 function fv_top_level_cats_post_link_category_restrict( $cat ) {
-  if( !FV_Top_Level_Cats::is_category_permalinks() ) {
+  if( !FV_Top_Level_Cats::is_category_permalinks() || !FV_Top_Level_Cats::is_category_restriction() ) {
     return $cat;  
   }
   
   $aArgs = func_get_args();
 
   $aAllowedCats = FV_Top_Level_Cats::get_allowed_cats();
- 
   if( !count($aAllowedCats) ) {
     return $cat;
   }
+  
+  //  check if the main category is allowed
+  if( in_array( $cat->term_id, $aAllowedCats ) ) {
+    return $cat;
+  }
 
+  //  check if any of the other categories is allowed!
   $isOk = false; 
   foreach( $aArgs[1] AS $objCat ) {
     if( in_array( $objCat->term_id, $aAllowedCats ) ) {
       $isOk = true;
       $cat = $objCat;
     }
+  }
+  
+  //  check if any of the parent categories is allowed
+  if( !$isOk ) {
+    foreach( $aArgs[1] AS $objCat ) {      
+      while( $objCat->parent != 0 ) {
+        $objCat = get_term_by( 'id', $objCat->parent, 'category' );
+      }      
+      if( in_array( $objCat->term_id, $aAllowedCats ) ) {
+        $isOk = true;
+        $cat = $objCat;
+      }
+    }    
   }
   
   return $cat;
@@ -221,6 +239,18 @@ class FV_Top_Level_Cats {
   
   
   
+  
+  function is_category_restriction() {
+    $options = get_option( 'fv_top_level_cats' );
+    if( isset($options['category-allow-enabled']) && $options['category-allow-enabled'] ) {
+      return true;
+    } else {
+      return false;
+    }
+  }  
+  
+  
+  
 	
   function options_panel() {
 
@@ -233,6 +263,7 @@ class FV_Top_Level_Cats {
 
         $options['category-allow'] = $_POST['post_category'];
         $options['top-level-only'] = ( $_POST['top-level-only'] ) ? true : false;
+        $options['category-allow-enabled'] = ( $_POST['category-allow-enabled'] ) ? true : false;
       
         update_option( 'fv_top_level_cats', $options );
 ?>
@@ -275,8 +306,11 @@ class FV_Top_Level_Cats {
             <table class="form-table">
               <tr>
                 <td>
-                  <p>Only allow following categories in URLs:</p>
-                  <ul id="category-allow"><?php wp_category_checklist( 0, 0, $options['category-allow'], false, null, false ); ?></ul>
+                  <label for="category-allow-enabled">
+                    <input type="checkbox" name="category-allow-enabled" id="category-allow-enabled" value="1" <?php if( $options['category-allow-enabled'] ) echo 'checked="checked"'; ?> />
+                    Only allow following categories in URLs:
+                  </label>                  
+                  <blockquote><ul id="category-allow"><?php wp_category_checklist( 0, 0, $options['category-allow'], false, null, false ); ?></ul></blockquote>
                 </td>
               </tr>               
               <tr>
