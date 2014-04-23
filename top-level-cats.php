@@ -306,28 +306,28 @@ class FV_Top_Level_Cats {
             <table class="form-table">
               <tr>
                 <td>
+                  <label for="top-level-only">
+                    <input type="checkbox" name="top-level-only" id="top-level-only" value="1" <?php if( $options['top-level-only'] ) echo 'checked="checked"'; ?> />
+                    Only use top-level catogories in URLs.
+                  </label>
+                </td>
+              </tr>                
+              <tr>
+                <td>
                   <label for="category-allow-enabled">
                     <input type="checkbox" name="category-allow-enabled" id="category-allow-enabled" value="1" <?php if( $options['category-allow-enabled'] ) echo 'checked="checked"'; ?> />
                     Only allow following categories in URLs:
                   </label>                  
                   <blockquote><ul id="category-allow"><?php wp_category_checklist( 0, 0, $options['category-allow'], false, null, false ); ?></ul></blockquote>
                 </td>
-              </tr>               
-              <tr>
-                <td>
-                  <label for="top-level-only">
-                    <input type="checkbox" name="top-level-only" id="top-level-only" value="1" <?php if( $options['top-level-only'] ) echo 'checked="checked"'; ?> />
-                    Only use top-level catogories in URLs.
-                  </label>
-                </td>
-              </tr>                          
+              </tr>                                       
             </table>
             <p>
               <input type="submit" name="fv_top_level_cats_submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
             </p>
           </div>
         </div>
-        <p><?php echo __('Are you having any problems or questions? Use our <a target="_blank" href="http://foliovision.com/support/fv-feedburner-replacement/">support forums</a>.'); ?></p>
+        <p><?php echo __('Are you having any problems or questions? Use our <a target="_blank" href="http://foliovision.com/support/fv-top-level-categories/">support forums</a>.'); ?></p>
       </div>
          
     </form>
