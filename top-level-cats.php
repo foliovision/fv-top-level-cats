@@ -3,7 +3,7 @@
 Plugin Name: FV Top Level Categories
 Plugin URI: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>
-Version: 1.4
+Version: 1.4.9
 Author: Foliovision
 Author URI: http://foliovision.com/  
 */
@@ -116,4 +116,199 @@ function top_level_cats_remove_cat_base($link) {
 	return preg_replace('|' . $category_base . '|', '', $link, 1);
 }
 
+
+
+
+function fv_top_level_cats_post_link_category_top_level_only( $cat ) {
+  if( !FV_Top_Level_Cats::is_category_permalinks() ) {
+    return $cat;  
+  } 
+ 
+  while( FV_Top_Level_Cats::is_top_level_only() && $cat->parent != 0 ) {
+    $cat = get_term_by( 'id', $cat->parent, 'category' );
+  }
+  
+  return $cat;
+}
+add_filter( 'post_link_category', 'fv_top_level_cats_post_link_category_top_level_only', 201, 3 );
+
+
+
+
+function fv_top_level_cats_post_link_category_restrict( $cat ) {
+  if( !FV_Top_Level_Cats::is_category_permalinks() ) {
+    return $cat;  
+  }
+  
+  $aArgs = func_get_args();
+
+  $aAllowedCats = FV_Top_Level_Cats::get_allowed_cats();
+ 
+  if( !count($aAllowedCats) ) {
+    return $cat;
+  }
+
+  $isOk = false; 
+  foreach( $aArgs[1] AS $objCat ) {
+    if( in_array( $objCat->term_id, $aAllowedCats ) ) {
+      $isOk = true;
+      $cat = $objCat;
+    }
+  }
+  
+  return $cat;
+}
+add_filter( 'post_link_category', 'fv_top_level_cats_post_link_category_restrict', 200, 3 );
+
+
+
+
+class FV_Top_Level_Cats {
+
+  var $enabled;
+  var $default_form_code;
+  var $default_form_css;
+
+  
+  
+  
+  public function __construct() {
+    add_action( 'admin_menu', array($this, 'admin_menu') );
+  }
+  
+
+  
+  
+  function admin_menu() {
+    add_options_page( 'FV Top Level Categories', 'FV Top Level Categories', 'manage_options', 'fv_top_level_cats', array($this, 'options_panel') );
+  }
+  
+  
+  
+  
+  function get_allowed_cats() {
+    $options = get_option( 'fv_top_level_cats' );
+    if( isset($options['category-allow']) ) {
+      return $options['category-allow'];
+    } else {
+      return false;
+    }    
+  }
+  
+  
+  
+  
+  function is_category_permalinks() {
+    $sPermalinks = get_option( 'permalink_structure' );
+    if( stripos($sPermalinks, '%category%/') !== false ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  
+  
+  
+  function is_top_level_only() {
+    $options = get_option( 'fv_top_level_cats' );
+    if( isset($options['top-level-only']) && $options['top-level-only'] ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  
+  
+	
+  function options_panel() {
+
+    if (!empty($_POST)) :
+    
+      check_admin_referer('fv_top_level_cats');
+      
+      if( isset($_POST['fv_top_level_cats_submit'] ) ) :
+        $options = get_option( 'fv_top_level_cats', array() );
+
+        $options['category-allow'] = $_POST['post_category'];
+        $options['top-level-only'] = ( $_POST['top-level-only'] ) ? true : false;
+      
+        update_option( 'fv_top_level_cats', $options );
 ?>
+    <div id="message" class="updated fade">
+      <p>
+        <strong>
+          Settings saved
+        </strong>
+      </p>
+    </div>
+<?php
+      endif; // fv_top_level_cats_submit
+                  
+    endif;
+    
+    $options = get_option( 'fv_top_level_cats' );
+?>
+
+<div class="wrap">
+  <div style="position: absolute; right: 20px; margin-top: 5px">
+  <a href="http://foliovision.com/wordpress/plugins/fv-top-level-categories" target="_blank" title="Documentation"><img alt="visit foliovision" src="http://foliovision.com/shared/fv-logo.png" /></a>
+  </div>
+  <div>
+    <div id="icon-options-general" class="icon32"><br /></div>
+    <h2>FV Top Level Categories</h2>
+  </div>
+  
+  <?php if( $this->is_category_permalinks() ) : ?>
+    <style>
+      #category-allow ul.children { margin-left: 20px; }
+    </style>
+    <form method="post" action="">
+      <?php wp_nonce_field('fv_top_level_cats') ?>
+      <div id="poststuff" class="ui-sortable">
+        <div class="postbox">
+          <h3>
+          <?php _e('Adjust categories in your post URLs') ?>
+          </h3>
+          <div class="inside">
+            <table class="form-table">
+              <tr>
+                <td>
+                  <p>Only allow following categories in URLs:</p>
+                  <ul id="category-allow"><?php wp_category_checklist( 0, 0, $options['category-allow'], false, null, false ); ?></ul>
+                </td>
+              </tr>               
+              <tr>
+                <td>
+                  <label for="top-level-only">
+                    <input type="checkbox" name="top-level-only" id="top-level-only" value="1" <?php if( $options['top-level-only'] ) echo 'checked="checked"'; ?> />
+                    Only use top-level catogories in URLs.
+                  </label>
+                </td>
+              </tr>                          
+            </table>
+            <p>
+              <input type="submit" name="fv_top_level_cats_submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+            </p>
+          </div>
+        </div>
+        <p><?php echo __('Are you having any problems or questions? Use our <a target="_blank" href="http://foliovision.com/support/fv-feedburner-replacement/">support forums</a>.'); ?></p>
+      </div>
+         
+    </form>
+  <?php else : ?>
+    <p>Since you are not using %category% in your post permalinks, there is nothing to adjust.</p>
+  <?php endif; ?>
+
+</div>
+
+
+<?php
+  }
+  
+  
+}
+
+
+$FV_Top_Level_Cats = new FV_Top_Level_Cats;
