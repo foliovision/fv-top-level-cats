@@ -3,7 +3,7 @@
 Plugin Name: FV Top Level Categories
 Plugin URI: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>
-Version: 1.4.9
+Version: 1.4.9.1
 Author: Foliovision
 Author URI: http://foliovision.com/  
 */
@@ -177,6 +177,47 @@ function fv_top_level_cats_post_link_category_restrict( $cat ) {
   return $cat;
 }
 add_filter( 'post_link_category', 'fv_top_level_cats_post_link_category_restrict', 200, 3 );
+
+
+
+
+function fv_top_level_category_filter( $aCategories ) {
+  if( class_exists('FV_Top_Level_Cats') && method_exists('FV_Top_Level_Cats','get_allowed_cats') ) {
+    
+    $aAllowedCats = FV_Top_Level_Cats::get_allowed_cats();
+    if( !count($aAllowedCats) ) {
+      return $aCategories;
+    }
+    
+    //  check if the main category is allowed
+    foreach( $aCategories AS $objCat ) {
+      if( in_array( $objCat->term_id, $aAllowedCats ) ) {
+        return array($objCat);
+      }
+    }
+    
+    foreach( $aCategories AS $objCat ) {      
+      while( $objCat->parent != 0 ) {
+        $objCat = get_term_by( 'id', $objCat->parent, 'category' );
+      }      
+      if( in_array( $objCat->term_id, $aAllowedCats ) ) {
+        return array($objCat);
+      }
+    }       
+  }
+  return $aCategories;
+}
+
+
+
+
+
+function fv_top_level_category( $separator = '', $parents = '',  $post_id  = false ) {
+  add_filter( 'get_the_categories', 'fv_top_level_category_filter' );
+  the_category( $separator, $parents, $post_id );
+  remove_filter( 'get_the_categories', 'fv_top_level_category_filter' );
+}
+add_action( 'fv_top_level_category', 'fv_top_level_category', 10, 3 );
 
 
 
