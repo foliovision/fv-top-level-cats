@@ -89,12 +89,18 @@ function fv_top_level_categories_tlc_redirect( $link ) {
 		$requested_url .= $_SERVER['REQUEST_URI'];
     
     $real_permalink = get_permalink($wp_query->queried_object_id);
-    if( $real_permalink != $requested_url ) {
-      wp_redirect( $real_permalink, 301 );
-      die();    
-    }
     
+    if( FALSE === stripos($requested_url, $real_permalink) ) {
+	
+	$bMached = preg_match('~/([^/:]+/?)$~',$real_permalink, $end_of_permalink);
+	if( $bMached && preg_match('~'.$end_of_permalink[1].'(.+)$~', $requested_url, $end_of_url) )
+		wp_redirect( $real_permalink . $end_of_url[1], 301 );
+	else
+		wp_redirect( $real_permalink, 301 );
+	die();    
+    }
   }
+  
   return $link;
 }
 
