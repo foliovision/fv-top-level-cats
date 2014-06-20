@@ -3,7 +3,7 @@
 Plugin Name: FV Top Level Categories
 Plugin URI: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>
-Version: 1.4.9.1
+Version: 1.5.1
 Author: Foliovision
 Author URI: http://foliovision.com/  
 */
@@ -77,6 +77,25 @@ function fv_top_level_categories_rewrite_rules($category_rewrite) {
 	
 	//var_dump($category_rewrite); // For Debugging
 	return $category_rewrite;
+}
+
+//Redirect to TL parent categ, if "Only use top-level catogories in URLs." is on
+add_filter('template_redirect', 'fv_top_level_categories_tlc_redirect', 999, 2);
+function fv_top_level_categories_tlc_redirect( $link ) {
+  if( FV_Top_Level_Cats::is_top_level_only() && is_single() ) {
+    global $wp_query;
+    $requested_url  = is_ssl() ? 'https://' : 'http://';
+		$requested_url .= $_SERVER['HTTP_HOST'];
+		$requested_url .= $_SERVER['REQUEST_URI'];
+    
+    $real_permalink = get_permalink($wp_query->queried_object_id);
+    if( $real_permalink != $requested_url ) {
+      wp_redirect( $real_permalink, 301 );
+      die();    
+    }
+    
+  }
+  return $link;
 }
 
 // Add 'category_redirect' query variable
@@ -245,7 +264,7 @@ class FV_Top_Level_Cats {
   
   
   
-  function get_allowed_cats() {
+  public static function get_allowed_cats() {
     $options = get_option( 'fv_top_level_cats' );
     if( isset($options['category-allow']) ) {
       return $options['category-allow'];
@@ -257,7 +276,7 @@ class FV_Top_Level_Cats {
   
   
   
-  function is_category_permalinks() {
+  public static function is_category_permalinks() {
     $sPermalinks = get_option( 'permalink_structure' );
     if( stripos($sPermalinks, '%category%/') !== false ) {
       return true;
@@ -269,7 +288,7 @@ class FV_Top_Level_Cats {
   
   
   
-  function is_top_level_only() {
+  public static function is_top_level_only() {
     $options = get_option( 'fv_top_level_cats' );
     if( isset($options['top-level-only']) && $options['top-level-only'] ) {
       return true;
@@ -281,7 +300,7 @@ class FV_Top_Level_Cats {
   
   
   
-  function is_category_restriction() {
+  public static function is_category_restriction() {
     $options = get_option( 'fv_top_level_cats' );
     if( isset($options['category-allow-enabled']) && $options['category-allow-enabled'] ) {
       return true;
