@@ -45,33 +45,31 @@ Make sure your categories have unique slugs - watch out for pages with the same 
 
 == Changelog ==
 
-= 1.5.1 =
+= Version 1.5 - 22 Jul 2014 =
 * Use only top level category option added. Redirection is applied after requesting post with full categories path, if this option is on.
-
-= 1.5 =
 * Settings screen added! Select which categories should be used in your URLs, if you use permalink structure with category slugs!
 
-= 1.4 =
+= Version 1.4 =
 * fix for Wordpress 3.4.1 - category prefix was part of the generated URLs
 
-= 1.3 =
+= Version 1.3 =
 * for for flushing of rewrite rules on plugin activation in WP 3.3
 
-= 1.2 =
+= Version 1.2 =
 * fix for WP 3.3
 * fix for /%categor%/%post-name% permalink structure
 
-= 1.1.3 =
+= Version 1.1.3 =
 * fix for deeper nested pages
 
-= 1.1.2 =
+= Version 1.1.2 =
 * fix for /category/child-category redirecting to /child-category page
 
-= 1.1.1 =
+= Version 1.1.1 =
 * fix for deeper nested categories
 
-= 1.1 =
+= Version 1.1 =
 * fix for WP 3.1
 
-= 1.0.1 =
+= Version 1.0.1 =
 * original version
