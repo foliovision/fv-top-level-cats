@@ -45,9 +45,12 @@ Make sure your categories have unique slugs - watch out for pages with the same 
 
 == Changelog ==
 
-= Version 1.5 - 22 Jul 2014 =
-* Use only top level category option added. Redirection is applied after requesting post with full categories path, if this option is on.
-* Settings screen added! Select which categories should be used in your URLs, if you use permalink structure with category slugs!
+= Version 1.5 - July 22nd, 2014 =
+* Settings screen added!
+* Category restrictions for post permalinks added! If you use post permalink structure with category in it, you can now restrict which categories will be allowed in the URL. Wordpress always picks the category with lowest category ID and that often causes inappropriate categories to show up in URLs - like /featured-content/2014/07/my-post"
+* Or you can simply force only the parent categories to show up in post URLs. So /parent-category/child-category/2014/07/my-post will change to /parent-category/2014/07/my-post
+* If you open the old post URL, proper 301 redirection to the new URL will be used.
+
 
 = Version 1.4 =
 * fix for Wordpress 3.4.1 - category prefix was part of the generated URLs
