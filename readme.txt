@@ -45,6 +45,9 @@ Make sure your categories have unique slugs - watch out for pages with the same 
 
 == Changelog ==
 
+= Version 1.6 - September 19th, 2014 =
+* Adding support for translations ( Slovak language added )
+
 = Version 1.5 - July 22nd, 2014 =
 * Settings screen added!
 * Category restrictions for post permalinks added! If you use post permalink structure with category in it, you can now restrict which categories will be allowed in the URL. Wordpress always picks the category with lowest category ID and that often causes inappropriate categories to show up in URLs - like /featured-content/2014/07/my-post"
