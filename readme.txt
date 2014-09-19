@@ -3,7 +3,7 @@ Contributors: FolioVision
 Donate link: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Tags: categories, permalink
 Requires at least: 3.2.1
-Tested up to: 4.0
+Tested up to: 3.9.1
 Stable tag: trunk
 
 This is a fix of Top Level Categories plugin for Wordpress 3.1. and above.
@@ -44,6 +44,9 @@ Make sure your categories have unique slugs - watch out for pages with the same 
 1. That's it! :)
 
 == Changelog ==
+
+= Version 1.6 - September 19th, 2014 =
+* Adding support for translations ( Slovak language added )
 
 = Version 1.5 - July 22nd, 2014 =
 * Settings screen added!
