@@ -3,7 +3,7 @@
 Plugin Name: FV Top Level Categories
 Plugin URI: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>
-Version: 1.5
+Version: 1.6
 Author: Foliovision
 Author URI: http://foliovision.com/  
 */
@@ -258,9 +258,10 @@ class FV_Top_Level_Cats {
   
   public function __construct() {
     add_action( 'admin_menu', array($this, 'admin_menu') );
+    add_action('init',array($this,'load_languages'));
   }
   
-
+  
   
   
   function admin_menu() {
@@ -289,6 +290,14 @@ class FV_Top_Level_Cats {
     } else {
       return false;
     }
+  }
+  
+  
+  
+    
+  function load_languages(){	
+	// Localization
+        load_plugin_textdomain('fv_tlc', false, dirname(plugin_basename(__FILE__)) . "/languages");	
   }
   
   
@@ -366,7 +375,7 @@ class FV_Top_Level_Cats {
       <div id="poststuff" class="ui-sortable">
         <div class="postbox">
           <h3>
-          <?php _e('Adjust categories in your post URLs') ?>
+          <?php _e('Adjust categories in your post URLs','fv_tlc') ?>
           </h3>
           <div class="inside">
             <table class="form-table">
@@ -374,7 +383,7 @@ class FV_Top_Level_Cats {
                 <td>
                   <label for="top-level-only">
                     <input type="checkbox" name="top-level-only" id="top-level-only" value="1" <?php if( $options['top-level-only'] ) echo 'checked="checked"'; ?> />
-                    Only use top-level catogories in URLs.
+                    <?php _e('Only use top-level catogories in URLs.','fv_tlc') ; ?>
                   </label>
                 </td>
               </tr>                
@@ -382,23 +391,23 @@ class FV_Top_Level_Cats {
                 <td>
                   <label for="category-allow-enabled">
                     <input type="checkbox" name="category-allow-enabled" id="category-allow-enabled" value="1" <?php if( $options['category-allow-enabled'] ) echo 'checked="checked"'; ?> />
-                    Only allow following categories in URLs:
+                    <?php _e('Only allow following categories in URLs:','fv_tlc' );?>
                   </label>                  
                   <blockquote><ul id="category-allow"><?php wp_category_checklist( 0, 0, $options['category-allow'], false, null, false ); ?></ul></blockquote>
                 </td>
               </tr>                                       
             </table>
             <p>
-              <input type="submit" name="fv_top_level_cats_submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+              <input type="submit" name="fv_top_level_cats_submit" class="button-primary" value="<?php _e('Save Changes','fv_tlc'); ?>" />
             </p>
           </div>
         </div>
-        <p><?php echo __('Are you having any problems or questions? Use our <a target="_blank" href="http://foliovision.com/support/fv-top-level-categories/">support forums</a>.'); ?></p>
+        <p><?php echo __('Are you having any problems or questions? Use our <a target="_blank" href="http://foliovision.com/support/fv-top-level-categories/">support forums</a>.','fv_tlc'); ?></p>
       </div>
          
     </form>
   <?php else : ?>
-    <p>Since you are not using %category% in your post permalinks, there is nothing to adjust.</p>
+    <p><?php _e('Since you are not using %category% in your post permalinks, there is nothing to adjust.','fv_tlc'); ?></p>
   <?php endif; ?>
 
 </div>
@@ -409,6 +418,5 @@ class FV_Top_Level_Cats {
   
   
 }
-
 
 $FV_Top_Level_Cats = new FV_Top_Level_Cats;

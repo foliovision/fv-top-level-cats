@@ -1,0 +1,50 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: FV-topl-level-categories\n"
+"POT-Creation-Date: 2014-09-19 11:37+0100\n"
+"PO-Revision-Date: 2014-09-19 11:49+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sk_SK\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.9\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Poedit-KeywordsList: __;_e;_n\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../top-level-cats.php:374
+msgid "Adjust categories in your post URLs"
+msgstr "Nastavenie kategórií v URL adresách postov"
+
+#: ../top-level-cats.php:382
+msgid "Only use top-level catogories in URLs."
+msgstr "Použiť iba hlavné kategórie v adresách URL."
+
+#: ../top-level-cats.php:390
+msgid "Only allow following categories in URLs:"
+msgstr "V URL adresách povoliť iba nasledujúce kategórie:"
+
+#: ../top-level-cats.php:397
+msgid "Save Changes"
+msgstr "Uložiť zmeny"
+
+#: ../top-level-cats.php:401
+msgid ""
+"Are you having any problems or questions? Use our <a target=\"_blank\" href="
+"\"http://foliovision.com/support/fv-top-level-categories/\">support forums</"
+"a>."
+msgstr ""
+"Máte nejaké problémy alebo otázky? Použite naše <a target=\"_blank\" href="
+"\"http://foliovision.com/support/fv-top-level-categories/\">forúm podpory</"
+"a>."
+
+#: ../top-level-cats.php:406
+msgid ""
+"Since you are not using %category% in your post permalinks, there is nothing "
+"to adjust."
+msgstr ""
+"Keďže vo svojích post permalinkoch nepoužívate %category% nie je tu nič čo "
+"by ste mohli nastaviť."
