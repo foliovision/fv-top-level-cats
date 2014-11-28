@@ -246,6 +246,17 @@ add_action( 'fv_top_level_category', 'fv_top_level_category', 10, 3 );
 
 
 
+add_filter('plugin_action_links', 'fv_top_level_cats_plugin_action_links', 10, 2);
+
+function fv_top_level_cats_plugin_action_links($links, $file) {
+  	$plugin_file = basename(__FILE__);
+  	if (basename($file) == $plugin_file) {
+      $settings_link =  '<a href="'.site_url('wp-admin/options-general.php?page=fv_top_level_cats').'">'.__('Settings','fv_tlc').'</a>';
+  		array_unshift($links, $settings_link);
+  	}
+  	return $links;
+}
+
 
 class FV_Top_Level_Cats {
 
