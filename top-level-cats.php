@@ -425,7 +425,7 @@ $FV_Top_Level_Cats = new FV_Top_Level_Cats;
 
 // Add settings link on plugin page
 function fv_top_level_categories_settings_link($links) { 
-  $settings_link = '<a href="options-general.php?page=fv_top_level_cats.php">' . __('Settings') . '</a>'; 
+  $settings_link = '<a href="options-general.php?page=fv_top_level_cats.php">' . __('Settings','fv_tlc') . '</a>'; 
   array_unshift($links, $settings_link); 
   return $links; 
 }
