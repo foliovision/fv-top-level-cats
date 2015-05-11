@@ -1,0 +1,41 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: FV-topl-level-categories\n"
+"POT-Creation-Date: 2015-03-03 14:42-0000\n"
+"PO-Revision-Date: 2015-03-03 14:49-0000\n"
+"Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>\n"
+"Language-Team: \n"
+"Language: pt_PT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.4\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;_n\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../top-level-cats.php:378
+msgid "Adjust categories in your post URLs"
+msgstr "Ajustar categorias nos URL dos seus artigos"
+
+#: ../top-level-cats.php:386
+msgid "Only use top-level catogories in URLs."
+msgstr "Utilizar apenas as categorias de topo nos URLs."
+
+#: ../top-level-cats.php:394
+msgid "Only allow following categories in URLs:"
+msgstr "Apenas permitir as seguintes categorias nos URLs:"
+
+#: ../top-level-cats.php:401
+msgid "Save Changes"
+msgstr "Guardar alterações"
+
+#: ../top-level-cats.php:405
+msgid "Are you having any problems or questions? Use our <a target=\"_blank\" href=\"http://foliovision.com/support/fv-top-level-categories/\">support forums</a>."
+msgstr "Tem algum problema ou alguma dúvida? Utilize os nossos <a target=\"_blank\" href=\"http://foliovision.com/support/fv-top-level-categories/\">fóruns de suporte</a>."
+
+#: ../top-level-cats.php:410
+msgid "Since you are not using %category% in your post permalinks, there is nothing to adjust."
+msgstr "Como não está a utilizar %category% nas ligações permanentes dos seus artigos, não há nada para ser ajustado."
