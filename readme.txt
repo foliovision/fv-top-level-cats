@@ -45,6 +45,10 @@ Make sure your categories have unique slugs - watch out for pages with the same 
 
 == Changelog ==
 
+= Version 1.7- May 12th, 2014 =
+
+* Added polish translation - thanks to maciejka45@gmail.com
+
 = Version 1.6 - September 19th, 2014 =
 * Adding support for translations ( Slovak language added )
 
