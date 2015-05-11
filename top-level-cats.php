@@ -3,9 +3,11 @@
 Plugin Name: FV Top Level Categories
 Plugin URI: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>
-Version: 1.6
+Version: 1.7
 Author: Foliovision
 Author URI: http://foliovision.com/  
+Text Domain: fv_tlc
+Domain Path: /languages/
 */
 
 register_activation_hook(__FILE__,'fv_top_level_categories_refresh_rules');
@@ -79,7 +81,7 @@ function fv_top_level_categories_rewrite_rules($category_rewrite) {
 	return $category_rewrite;
 }
 
-//Redirect to TL parent categ, if "Only use top-level catogories in URLs." is on
+//Redirect to TL parent categ, if "Only use top-level categories in URLs." is on
 add_filter('template_redirect', 'fv_top_level_categories_tlc_redirect', 999, 2);
 function fv_top_level_categories_tlc_redirect( $link ) {
   if( FV_Top_Level_Cats::is_top_level_only() && is_single() ) {
@@ -265,7 +267,7 @@ class FV_Top_Level_Cats {
   
   
   function admin_menu() {
-    add_options_page( 'FV Top Level Categories', 'FV Top Level Categories', 'manage_options', 'fv_top_level_cats', array($this, 'options_panel') );
+    add_options_page( __('FV Top Level Categories','fv_tlc'), __('FV Top Level Categories','fv_tlc'), 'manage_options', 'fv_top_level_cats', array($this, 'options_panel') );
   }
   
   
@@ -363,7 +365,7 @@ class FV_Top_Level_Cats {
   </div>
   <div>
     <div id="icon-options-general" class="icon32"><br /></div>
-    <h2>FV Top Level Categories</h2>
+    <h2><?php _e('FV Top Level Categories','fv_tlc'); ?></h2>
   </div>
   
   <?php if( $this->is_category_permalinks() ) : ?>
@@ -383,7 +385,7 @@ class FV_Top_Level_Cats {
                 <td>
                   <label for="top-level-only">
                     <input type="checkbox" name="top-level-only" id="top-level-only" value="1" <?php if( $options['top-level-only'] ) echo 'checked="checked"'; ?> />
-                    <?php _e('Only use top-level catogories in URLs.','fv_tlc') ; ?>
+                    <?php _e('Only use top-level categories in URLs.','fv_tlc') ; ?>
                   </label>
                 </td>
               </tr>                
@@ -402,7 +404,7 @@ class FV_Top_Level_Cats {
             </p>
           </div>
         </div>
-        <p><?php echo __('Are you having any problems or questions? Use our <a target="_blank" href="http://foliovision.com/support/fv-top-level-categories/">support forums</a>.','fv_tlc'); ?></p>
+        <p><?php _e('Are you having any problems or questions? Use our <a target="_blank" href="http://foliovision.com/support/fv-top-level-categories/">support forums</a>.','fv_tlc'); ?></p>
       </div>
          
     </form>
@@ -420,3 +422,13 @@ class FV_Top_Level_Cats {
 }
 
 $FV_Top_Level_Cats = new FV_Top_Level_Cats;
+
+// Add settings link on plugin page
+function fv_top_level_categories_settings_link($links) { 
+  $settings_link = '<a href="options-general.php?page=fv_top_level_cats.php">' . __('Settings') . '</a>'; 
+  array_unshift($links, $settings_link); 
+  return $links; 
+}
+ 
+$plugin = plugin_basename(__FILE__); 
+add_filter("plugin_action_links_$plugin", 'fv_top_level_categories_settings_link' );

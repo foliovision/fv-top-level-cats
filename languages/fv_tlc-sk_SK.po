@@ -20,7 +20,7 @@ msgid "Adjust categories in your post URLs"
 msgstr "Nastavenie kategórií v URL adresách postov"
 
 #: ../top-level-cats.php:382
-msgid "Only use top-level catogories in URLs."
+msgid "Only use top-level categories in URLs."
 msgstr "Použiť iba hlavné kategórie v adresách URL."
 
 #: ../top-level-cats.php:390

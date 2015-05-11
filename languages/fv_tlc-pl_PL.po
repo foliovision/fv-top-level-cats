@@ -1,0 +1,65 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: FV-topl-level-categories\n"
+"POT-Creation-Date: 2015-05-01 00:15+0100\n"
+"PO-Revision-Date: 2015-05-01 00:30+0100\n"
+"Last-Translator: Maciej Gryniuk <maciejka45@gmail.com>\n"
+"Language-Team: Maciej Gryniuk <maciejka45@gmail.com>\n"
+"Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8beta1\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Poedit-KeywordsList: __;_e;_n\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: top-level-cats.php:3
+msgid "FV Top Level Categories"
+msgstr "FV Kategorie najwyższego poziomu"
+
+#: top-level-cats.php:5
+msgid ""
+"Removes the prefix from the URL for a category. For instance, if your old "
+"category link was <code>/category/catname</code> it will now be <code>/"
+"catname</code>"
+msgstr ""
+"Usuwa prefiks kategorii z adresu URL. Przykładowo, jeżeli Twój stary link do "
+"kategorii wyglądał tak: <code>/category/nazwakategorii</code>, teraz będzie "
+"taki: <code>/nazwakategorii</code>"
+
+#: top-level-cats.php:380
+msgid "Adjust categories in your post URLs"
+msgstr "Dostosuj kategorie w adresach URL wpisów"
+
+#: top-level-cats.php:388
+msgid "Only use top-level categories in URLs."
+msgstr "Używaj w adresach URL tylko kategorii najwyższego poziomu."
+
+#: top-level-cats.php:396
+msgid "Only allow following categories in URLs:"
+msgstr "Dozwól jedynie następujące kategorie w adresach URL:"
+
+#: top-level-cats.php:403
+msgid "Save Changes"
+msgstr "Zapisz zmiany"
+
+#: top-level-cats.php:407
+msgid ""
+"Are you having any problems or questions? Use our <a target=\"_blank\" href="
+"\"http://foliovision.com/support/fv-top-level-categories/\">support forums</"
+"a>."
+msgstr ""
+"Doświadczasz jakiś problemów lub masz pytania? Skorzytaj z naszego <a target="
+"\"_blank\" href=\"http://foliovision.com/support/fv-top-level-categories/"
+"\">forum wsparcia</a>."
+
+#: top-level-cats.php:412
+msgid ""
+"Since you are not using %category% in your post permalinks, there is nothing "
+"to adjust."
+msgstr ""
+"Ponieważ nie używasz %category% w bezpośrednich odnośnikach wpisów, nie "
+"musisz nic dostosowywać."
