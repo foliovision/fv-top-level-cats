@@ -48,7 +48,7 @@ Make sure your categories have unique slugs - watch out for pages with the same 
 = Version 1.7- May 12th, 2014 =
 
 * Added Polish translation - thanks to maciejka45@gmail.com
-* Added Portuguese translation - thanks to Pedro Mendonça
+* Added Portuguese translation - thanks to Pedro Mendon√ßa
 
 = Version 1.6 - September 19th, 2014 =
 * Adding support for translations ( Slovak language added )
