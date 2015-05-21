@@ -50,7 +50,8 @@ function fv_top_level_categories_rewrite_rules($category_rewrite) {
     $pages_urls[] = trim( str_replace( get_bloginfo( 'url' ), '', get_permalink( $pages_item->ID ) ), '/' );
   }
   ///
-	
+	global $wp_rewrite;
+		
 	$category_rewrite=array();
 	$categories=get_categories(array('hide_empty'=>false));
 	foreach($categories as $category) {
@@ -68,11 +69,10 @@ function fv_top_level_categories_rewrite_rules($category_rewrite) {
 		
 		
 		$category_rewrite['('.$category_nicename.')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'] = 'index.php?category_name=$matches[1]&feed=$matches[2]';
-		$category_rewrite['('.$category_nicename.')/page/?([0-9]{1,})/?$'] = 'index.php?category_name=$matches[1]&paged=$matches[2]';
+		$category_rewrite['('.$category_nicename.')/'. $wp_rewrite->pagination_base .'/?([0-9]{1,})/?$'] = 'index.php?category_name=$matches[1]&paged=$matches[2]';
 		$category_rewrite['('.$category_nicename.')/?$'] = 'index.php?category_name=$matches[1]';
 	}
 	// Redirect support from Old Category Base
-	global $wp_rewrite;
 	$old_category_base = get_option('category_base') ? get_option('category_base') : 'category';
 	$old_category_base = trim($old_category_base, '/');
 	$category_rewrite[$old_category_base.'/(.*)$'] = 'index.php?category_redirect=$matches[1]';
