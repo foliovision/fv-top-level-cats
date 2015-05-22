@@ -45,7 +45,12 @@ Make sure your categories have unique slugs - watch out for pages with the same 
 
 == Changelog ==
 
-= Version 1.7- May 12th, 2014 =
+= Version 1.8 - May 22th, 2014 =
+
+* Fix for paginated category archives when using custom pagination_base - thanks to odie2!
+* Fix for settings link in plugin row - thanks to odie2!
+
+= Version 1.7 - May 12th, 2014 =
 
 * Added Polish translation - thanks to maciejka45@gmail.com
 * Added Portuguese translation - thanks to Pedro Mendonça
