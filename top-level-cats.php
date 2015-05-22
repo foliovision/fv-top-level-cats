@@ -3,7 +3,7 @@
 Plugin Name: FV Top Level Categories
 Plugin URI: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>
-Version: 1.6
+Version: 1.8
 Author: Foliovision
 Author URI: http://foliovision.com/  
 Text Domain: fv_tlc
@@ -50,7 +50,8 @@ function fv_top_level_categories_rewrite_rules($category_rewrite) {
     $pages_urls[] = trim( str_replace( get_bloginfo( 'url' ), '', get_permalink( $pages_item->ID ) ), '/' );
   }
   ///
-	
+	global $wp_rewrite;
+		
 	$category_rewrite=array();
 	$categories=get_categories(array('hide_empty'=>false));
 	foreach($categories as $category) {
@@ -68,11 +69,10 @@ function fv_top_level_categories_rewrite_rules($category_rewrite) {
 		
 		
 		$category_rewrite['('.$category_nicename.')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'] = 'index.php?category_name=$matches[1]&feed=$matches[2]';
-		$category_rewrite['('.$category_nicename.')/page/?([0-9]{1,})/?$'] = 'index.php?category_name=$matches[1]&paged=$matches[2]';
+		$category_rewrite['('.$category_nicename.')/'. $wp_rewrite->pagination_base .'/?([0-9]{1,})/?$'] = 'index.php?category_name=$matches[1]&paged=$matches[2]';
 		$category_rewrite['('.$category_nicename.')/?$'] = 'index.php?category_name=$matches[1]';
 	}
 	// Redirect support from Old Category Base
-	global $wp_rewrite;
 	$old_category_base = get_option('category_base') ? get_option('category_base') : 'category';
 	$old_category_base = trim($old_category_base, '/');
 	$category_rewrite[$old_category_base.'/(.*)$'] = 'index.php?category_redirect=$matches[1]';
@@ -425,7 +425,7 @@ $FV_Top_Level_Cats = new FV_Top_Level_Cats;
 
 // Add settings link on plugin page
 function fv_top_level_categories_settings_link($links) { 
-  $settings_link = '<a href="options-general.php?page=fv_top_level_cats.php">' . __('Settings') . '</a>'; 
+  $settings_link = '<a href="options-general.php?page=fv_top_level_cats">' . __('Settings','fv_tlc') . '</a>'; 
   array_unshift($links, $settings_link); 
   return $links; 
 }
