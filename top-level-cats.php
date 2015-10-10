@@ -336,17 +336,26 @@ class FV_Top_Level_Cats {
       check_admin_referer('fv_top_level_cats');
       
       if( isset($_POST['fv_top_level_cats_submit'] ) ) :
-        $options = get_option( 'fv_top_level_cats', array() );
-        if(isset($_POST['post_category'])){
-            $options['category-allow'] = $_POST['post_category'];
+        
+        if(isset($_POST['fv_top_level_cats'])) {
+          $options = get_option( 'fv_top_level_cats', array() );
         }
-        $options['top-level-only'] = ( $_POST['top-level-only'] ) ? true : false;
+        
+        if(isset($_POST['post_category'])) {
+          $options['category-allow'] = $_POST['post_category'];
+        }
+
+        if(isset($_POST['top-level-only'])) {
+          $options['top-level-only'] = ( $_POST['top-level-only'] ) ? true : false;
+        }
 
         if(isset($_POST['category-allow-enabled'])){
-            $options['category-allow-enabled'] = ( $_POST['category-allow-enabled'] ) ? true : false;
+          $options['category-allow-enabled'] = ( $_POST['category-allow-enabled'] ) ? true : false;
         }
-      
-        update_option( 'fv_top_level_cats', $options );
+
+        if(isset($options)) {
+          update_option( 'fv_top_level_cats', $options );
+        }
 ?>
     <div id="message" class="updated fade">
       <p>
@@ -388,7 +397,8 @@ class FV_Top_Level_Cats {
               <tr>
                 <td>
                   <label for="top-level-only">
-                    <input type="checkbox" name="top-level-only" id="top-level-only" value="1" <?php if( $options['top-level-only'] ) echo 'checked="checked"'; ?> />
+
+                    <input type="checkbox" name="top-level-only" id="top-level-only" value="1" <?php if( isset($options['top-level-only'] )) { if( $options['top-level-only'] ) echo 'checked="checked"'; }?> />
                     <?php _e('Only use top-level categories in URLs.','fv_tlc') ; ?>
                   </label>
                 </td>
@@ -396,10 +406,20 @@ class FV_Top_Level_Cats {
               <tr>
                 <td>
                   <label for="category-allow-enabled">
-                    <input type="checkbox" name="category-allow-enabled" id="category-allow-enabled" value="1" <?php if( $options['category-allow-enabled'] ) echo 'checked="checked"'; ?> />
+                    <input type="checkbox" name="category-allow-enabled" id="category-allow-enabled" value="1" <?php if(isset($options['category-allow-enabled'])) { if( $options['category-allow-enabled'] ) echo 'checked="checked"'; }?> />
                     <?php _e('Only allow following categories in URLs:','fv_tlc' );?>
                   </label>                  
-                  <blockquote><ul id="category-allow"><?php wp_category_checklist( 0, 0, $options['category-allow'], false, null, false ); ?></ul></blockquote>
+                  <blockquote>
+                    <ul id="category-allow"> <?php  
+                        if( isset($options['category-allow']) ) {
+                            $descendants_and_self = $options['category-allow'];
+                        }else{
+                            $descendants_and_self = 0; //wp default value
+                        }
+                        wp_category_checklist( 0, 0,  $descendants_and_self, false, null, false ); 
+                      ?>
+                    </ul>
+                  </blockquote>
                 </td>
               </tr>                                       
             </table>
