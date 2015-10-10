@@ -337,10 +337,14 @@ class FV_Top_Level_Cats {
       
       if( isset($_POST['fv_top_level_cats_submit'] ) ) :
         $options = get_option( 'fv_top_level_cats', array() );
-
-        $options['category-allow'] = $_POST['post_category'];
+        if(isset($_POST['post_category'])){
+            $options['category-allow'] = $_POST['post_category'];
+        }
         $options['top-level-only'] = ( $_POST['top-level-only'] ) ? true : false;
-        $options['category-allow-enabled'] = ( $_POST['category-allow-enabled'] ) ? true : false;
+
+        if(isset($_POST['category-allow-enabled'])){
+            $options['category-allow-enabled'] = ( $_POST['category-allow-enabled'] ) ? true : false;
+        }
       
         update_option( 'fv_top_level_cats', $options );
 ?>
