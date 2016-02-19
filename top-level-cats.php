@@ -3,7 +3,7 @@
 Plugin Name: FV Top Level Categories
 Plugin URI: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>
-Version: 1.8
+Version: 1.8.1
 Author: Foliovision
 Author URI: http://foliovision.com/  
 Text Domain: fv_tlc
@@ -92,14 +92,13 @@ function fv_top_level_categories_tlc_redirect( $link ) {
     
     $real_permalink = get_permalink($wp_query->queried_object_id);
     
-    if( FALSE === stripos($requested_url, $real_permalink) ) {
-	
-	$bMached = preg_match('~/([^/:]+/?)$~',$real_permalink, $end_of_permalink);
-	if( $bMached && preg_match('~'.$end_of_permalink[1].'(.+)$~', $requested_url, $end_of_url) )
-		wp_redirect( $real_permalink . $end_of_url[1], 301 );
-	else
-		wp_redirect( $real_permalink, 301 );
-	die();    
+    if( $real_permalink && FALSE === stripos($requested_url, $real_permalink) ) {
+      $bMached = preg_match('~/([^/:]+/?)$~',$real_permalink, $end_of_permalink);
+      if( $bMached && preg_match('~'.$end_of_permalink[1].'(.+)$~', $requested_url, $end_of_url) )
+        wp_redirect( $real_permalink . $end_of_url[1], 301 );
+      else
+        wp_redirect( $real_permalink, 301 );
+      die();    
     }
   }
   
