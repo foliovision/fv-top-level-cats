@@ -27,12 +27,23 @@ function fv_top_level_categories_deactivate() {
 }
 
 // Remove category base
-add_action('init', 'fv_top_level_categories_permastruct');
+add_action('init', 'fv_top_level_categories_permastruct,999999');
 function fv_top_level_categories_permastruct() {
 	global $wp_rewrite;
 	$wp_rewrite->extra_permastructs['category'][0] = '%category%';
 	
-	if (get_option('fv_top_level_categories_rewrite_rules_flush') == 'true') {
+	$bFound = false;
+	$aRules = get_option('rewrite_rules');
+	if( $aRules && count($aRules) > 0 ) {
+		foreach( $aRules AS $key => $value ) {
+			if( $key == 'fv-top-level-cat-tweaks-detector-235hnguh9hq46j0909iasn0zzdfsAJ' ) {
+				$bFound = true;
+				break;
+			}
+		}
+	}	
+	
+	if( !$bFound || get_option('fv_top_level_categories_rewrite_rules_flush') == 'true') {
 		flush_rewrite_rules();
 		delete_option('fv_top_level_categories_rewrite_rules_flush');
 	}	
@@ -76,6 +87,8 @@ function fv_top_level_categories_rewrite_rules($category_rewrite) {
 	$old_category_base = get_option('category_base') ? get_option('category_base') : 'category';
 	$old_category_base = trim($old_category_base, '/');
 	$category_rewrite[$old_category_base.'/(.*)$'] = 'index.php?category_redirect=$matches[1]';
+	
+	$category_rewrite['fv-top-level-cat-tweaks-detector-235hnguh9hq46j0909iasn0zzdfsAJ'] = 'index.php?fv-top-level-cat-tweaks-detector-235hnguh9hq46j0909iasn0zzdfsAJ=1';
 	
 	//var_dump($category_rewrite); // For Debugging
 	return $category_rewrite;
