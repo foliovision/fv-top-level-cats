@@ -45,7 +45,11 @@ Make sure your categories have unique slugs - watch out for pages with the same 
 
 == Changelog ==
 
-= Version 1.8.1 - April 7h, 2016 =
+= Version 1.8.2 - May 26th, 2016 =
+
+* Self-checking for rewrite rules
+
+= Version 1.8.1 - April 7th, 2016 =
 
 * Fix for PHP warnings
 

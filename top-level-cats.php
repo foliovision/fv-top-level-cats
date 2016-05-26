@@ -3,7 +3,7 @@
 Plugin Name: FV Top Level Categories
 Plugin URI: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>
-Version: 1.8.1
+Version: 1.8.2
 Author: Foliovision
 Author URI: http://foliovision.com/  
 Text Domain: fv_tlc
@@ -27,7 +27,7 @@ function fv_top_level_categories_deactivate() {
 }
 
 // Remove category base
-add_action('init', 'fv_top_level_categories_permastruct,999999');
+add_action('init', 'fv_top_level_categories_permastruct',999999);
 function fv_top_level_categories_permastruct() {
 	global $wp_rewrite;
 	$wp_rewrite->extra_permastructs['category'][0] = '%category%';
