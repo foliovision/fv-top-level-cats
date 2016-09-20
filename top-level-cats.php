@@ -12,12 +12,12 @@ Domain Path: /languages/
 
 register_activation_hook(__FILE__,'fv_top_level_categories_refresh_rules');
 
-add_action('created_category','fv_top_level_categories_refresh_rules');
-add_action('edited_category','fv_top_level_categories_refresh_rules');
-add_action('delete_category','fv_top_level_categories_refresh_rules');
+//add_action('created_category','fv_top_level_categories_refresh_rules');
+//add_action('edited_category','fv_top_level_categories_refresh_rules');
+//add_action('delete_category','fv_top_level_categories_refresh_rules');
 
 function fv_top_level_categories_refresh_rules() {
-	add_option('fv_top_level_categories_rewrite_rules_flush', 'true');
+	//add_option('fv_top_level_categories_rewrite_rules_flush', 'true');
 }
 register_deactivation_hook(__FILE__,'fv_top_level_categories_deactivate');
 
@@ -27,7 +27,7 @@ function fv_top_level_categories_deactivate() {
 }
 
 // Remove category base
-add_action('init', 'fv_top_level_categories_permastruct');
+//add_action('init', 'fv_top_level_categories_permastruct');
 function fv_top_level_categories_permastruct() {
 	global $wp_rewrite;
 	$wp_rewrite->extra_permastructs['category'][0] = '%category%';
@@ -39,7 +39,7 @@ function fv_top_level_categories_permastruct() {
 }
 
 // Add our custom category rewrite rules
-add_filter('category_rewrite_rules', 'fv_top_level_categories_rewrite_rules');
+//add_filter('category_rewrite_rules', 'fv_top_level_categories_rewrite_rules');
 function fv_top_level_categories_rewrite_rules($category_rewrite) {
 	//var_dump($category_rewrite); // For Debugging
 	
@@ -455,3 +455,22 @@ function fv_top_level_categories_settings_link($links) {
  
 $plugin = plugin_basename(__FILE__); 
 add_filter("plugin_action_links_$plugin", 'fv_top_level_categories_settings_link' );
+
+
+/*
+ *  Hotfix!
+ */
+add_filter( 'parse_request', 'fv_tweak_parse_request' );
+
+function fv_tweak_parse_request( $arg ) {
+  
+  if( !is_main_query() || !isset($arg->query_vars) || !isset($arg->query_vars['pagename']) || strlen($arg->query_vars['pagename']) == 0 ) return;
+  
+  $objCat = get_category_by_slug($arg->query_vars['pagename']);
+  if( $objCat && $objCat->count > 0 ) {
+    unset($arg->query_vars['page']);
+    unset($arg->query_vars['pagename']);
+    $arg->query_vars['category_name'] = $objCat->name;
+  }
+  
+}
