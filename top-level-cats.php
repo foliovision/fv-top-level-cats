@@ -470,7 +470,7 @@ function fv_tweak_parse_request( $arg ) {
   if( $objCat && $objCat->count > 0 ) {
     unset($arg->query_vars['page']);
     unset($arg->query_vars['pagename']);
-    $arg->query_vars['category_name'] = $objCat->name;
+    $arg->query_vars['category_name'] = $objCat->slug;
   }
   
 }
