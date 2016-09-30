@@ -2,8 +2,8 @@
 /*
 Plugin Name: FV Top Level Categories
 Plugin URI: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
-Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>
-Version: 1.8.1
+Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>. FV: Doesn't use rewrite anymore, but simply checks if any category matches the rewrite rule - not giving priority to pages!
+Version: 1.8.999
 Author: Foliovision
 Author URI: http://foliovision.com/  
 Text Domain: fv_tlc
@@ -465,8 +465,15 @@ add_filter( 'parse_request', 'fv_tweak_parse_request' );
 function fv_tweak_parse_request( $arg ) {
   
   if( !is_main_query() || !isset($arg->query_vars) || !isset($arg->query_vars['pagename']) || strlen($arg->query_vars['pagename']) == 0 ) return;
-  
-  $objCat = get_category_by_slug($arg->query_vars['pagename']);
+
+  $aParts = explode( '/', $arg->query_vars['pagename'] );
+  if( count($aParts) > 0 ) {
+    $category_slug = $aParts[count($aParts)-1];
+  } else {
+    $category_slug = $arg->query_vars['pagename'];
+  }
+
+  $objCat = get_category_by_slug($category_slug);
   if( $objCat && $objCat->count > 0 ) {
     unset($arg->query_vars['page']);
     unset($arg->query_vars['pagename']);
