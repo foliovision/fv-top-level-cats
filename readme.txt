@@ -45,6 +45,10 @@ Make sure your categories have unique slugs - watch out for pages with the same 
 
 == Changelog ==
 
+= Version 1.8.3 - Jul 07th, 2017 =
+
+* Fix for WPML Multilingual CMS
+
 = Version 1.8.2 - May 26th, 2016 =
 
 * Self-checking for rewrite rules
