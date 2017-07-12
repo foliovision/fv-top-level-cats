@@ -54,6 +54,10 @@ add_filter('category_rewrite_rules', 'fv_top_level_categories_rewrite_rules');
 function fv_top_level_categories_rewrite_rules($category_rewrite) {
 	//var_dump($category_rewrite); // For Debugging
 	
+  global $sitepress;
+  if( isset($sitepress) && $sitepress ) {
+    $sitepress->switch_lang('all');
+  }
 	///  First we need to get full URLs of our pages
 	$pages = get_pages( 'number=0' );
 	$pages_urls = array();
@@ -64,11 +68,6 @@ function fv_top_level_categories_rewrite_rules($category_rewrite) {
 	global $wp_rewrite;
 		
 	$category_rewrite=array();
-  
-  global $sitepress;
-  if( isset($sitepress) && $sitepress ) {
-    $sitepress->switch_lang('all');
-  }
   
   $categories=get_categories(array('hide_empty'=>false));
   
@@ -439,7 +438,7 @@ class FV_Top_Level_Cats {
                         }else{
                             $descendants_and_self = 0; //wp default value
                         }
-                        
+
                         global $sitepress;
                         if( isset($sitepress) && $sitepress ) {
                           $sitepress->switch_lang('all');
@@ -450,6 +449,7 @@ class FV_Top_Level_Cats {
                         if( isset($sitepress) && $sitepress ) {
                           $sitepress->switch_lang(ICL_LANGUAGE_CODE);
                         }
+
                       ?>
                     </ul>
                   </blockquote>
