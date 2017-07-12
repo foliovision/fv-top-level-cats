@@ -3,7 +3,7 @@
 Plugin Name: FV Top Level Categories
 Plugin URI: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>
-Version: 1.8.2
+Version: 1.8.3
 Author: Foliovision
 Author URI: http://foliovision.com/  
 Text Domain: fv_tlc
@@ -54,6 +54,10 @@ add_filter('category_rewrite_rules', 'fv_top_level_categories_rewrite_rules');
 function fv_top_level_categories_rewrite_rules($category_rewrite) {
 	//var_dump($category_rewrite); // For Debugging
 	
+  global $sitepress;
+  if( isset($sitepress) && $sitepress ) {
+    $sitepress->switch_lang('all');
+  }
 	///  First we need to get full URLs of our pages
 	$pages = get_pages( 'number=0' );
 	$pages_urls = array();
@@ -64,7 +68,13 @@ function fv_top_level_categories_rewrite_rules($category_rewrite) {
 	global $wp_rewrite;
 		
 	$category_rewrite=array();
-	$categories=get_categories(array('hide_empty'=>false));
+  
+  $categories=get_categories(array('hide_empty'=>false));
+  
+  if( isset($sitepress) && $sitepress ) {
+    $sitepress->switch_lang(ICL_LANGUAGE_CODE);
+  }
+  
 	foreach($categories as $category) {
 		$category_nicename = $category->slug;
 		if ( $category->parent == $category->cat_ID ) // recursive recursion
@@ -428,7 +438,18 @@ class FV_Top_Level_Cats {
                         }else{
                             $descendants_and_self = 0; //wp default value
                         }
-                        wp_category_checklist( 0, 0,  $descendants_and_self, false, null, false ); 
+
+                        global $sitepress;
+                        if( isset($sitepress) && $sitepress ) {
+                          $sitepress->switch_lang('all');
+                        }
+                        
+                        wp_category_checklist( 0, 0,  $descendants_and_self, false, null, false );
+                        
+                        if( isset($sitepress) && $sitepress ) {
+                          $sitepress->switch_lang(ICL_LANGUAGE_CODE);
+                        }
+
                       ?>
                     </ul>
                   </blockquote>
