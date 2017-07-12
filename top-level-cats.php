@@ -439,7 +439,17 @@ class FV_Top_Level_Cats {
                         }else{
                             $descendants_and_self = 0; //wp default value
                         }
-                        wp_category_checklist( 0, 0,  $descendants_and_self, false, null, false ); 
+                        
+                        global $sitepress;
+                        if( isset($sitepress) && $sitepress ) {
+                          $sitepress->switch_lang('all');
+                        }
+                        
+                        wp_category_checklist( 0, 0,  $descendants_and_self, false, null, false );
+                        
+                        if( isset($sitepress) && $sitepress ) {
+                          $sitepress->switch_lang(ICL_LANGUAGE_CODE);
+                        }
                       ?>
                     </ul>
                   </blockquote>
