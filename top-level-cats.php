@@ -3,7 +3,7 @@
 Plugin Name: FV Top Level Categories
 Plugin URI: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>
-Version: 1.8.2
+Version: 1.9
 Author: Foliovision
 Author URI: http://foliovision.com/  
 Text Domain: fv_tlc
@@ -53,6 +53,12 @@ function fv_top_level_categories_permastruct() {
 add_filter('category_rewrite_rules', 'fv_top_level_categories_rewrite_rules');
 function fv_top_level_categories_rewrite_rules($category_rewrite) {
 	//var_dump($category_rewrite); // For Debugging
+  $bAMP = false;
+  foreach( $category_rewrite AS $k => $v ) {
+    if( stripos($k, '/amp') !== false ) {
+      $bAMP = true;
+    }
+  }
 	
 	///  First we need to get full URLs of our pages
 	$pages = get_pages( 'number=0' );
@@ -81,7 +87,11 @@ function fv_top_level_categories_rewrite_rules($category_rewrite) {
 		
 		$category_rewrite['('.$category_nicename.')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'] = 'index.php?category_name=$matches[1]&feed=$matches[2]';
 		$category_rewrite['('.$category_nicename.')/'. $wp_rewrite->pagination_base .'/?([0-9]{1,})/?$'] = 'index.php?category_name=$matches[1]&paged=$matches[2]';
-		$category_rewrite['('.$category_nicename.')/?$'] = 'index.php?category_name=$matches[1]';
+    if( $bAMP ) {
+      $category_rewrite['('.$category_nicename.')/amp/'. $wp_rewrite->pagination_base .'/?([0-9]{1,})/?$'] = 'index.php?amp&category_name=$matches[1]&paged=$matches[2]';
+      $category_rewrite['('.$category_nicename.')/amp/?$'] = 'index.php?amp&category_name=$matches[1]'; 
+    }
+		$category_rewrite['('.$category_nicename.')/?$'] = 'index.php?category_name=$matches[1]';    
 	}
 	// Redirect support from Old Category Base
 	$old_category_base = get_option('category_base') ? get_option('category_base') : 'category';
