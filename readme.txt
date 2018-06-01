@@ -45,6 +45,10 @@ Make sure your categories have unique slugs - watch out for pages with the same 
 
 == Changelog ==
 
+= Version 1.9 - June 1st, 2018 =
+
+* Bugfix for AMP category URLs
+
 = Version 1.8.2 - May 26th, 2016 =
 
 * Self-checking for rewrite rules
