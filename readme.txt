@@ -3,7 +3,7 @@ Contributors: FolioVision
 Donate link: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Tags: categories, permalink
 Requires at least: 3.2.1
-Tested up to: 4.9.6
+Tested up to: 5.3
 Stable tag: trunk
 License: GPLv2 or later
 8	License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -46,6 +46,13 @@ Make sure your categories have unique slugs - watch out for pages with the same 
 1. That's it! :)
 
 == Changelog ==
+
+= Version 1.9.1 - November 28th, 2019 =
+
+* Assing GPL license info
+* Tested with WordPress 5.3
+
+* Bugfix for AMP category URLs
 
 = Version 1.9 - June 1st, 2018 =
 
