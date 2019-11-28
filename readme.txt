@@ -5,6 +5,8 @@ Tags: categories, permalink
 Requires at least: 3.2.1
 Tested up to: 4.9.6
 Stable tag: trunk
+License: GPLv2 or later
+8	License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 This is a fix of Top Level Categories plugin for Wordpress 3.1. and above.
 
