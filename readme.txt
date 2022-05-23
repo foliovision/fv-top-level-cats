@@ -3,7 +3,7 @@ Contributors: FolioVision
 Donate link: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-categories
 Tags: categories, permalink
 Requires at least: 3.2.1
-Tested up to: 5.3
+Tested up to: 6.0
 Stable tag: trunk
 License: GPLv2 or later
 8	License URI: https://www.gnu.org/licenses/gpl-2.0.html
