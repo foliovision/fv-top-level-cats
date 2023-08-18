@@ -5,7 +5,7 @@ Plugin URI: http://foliovision.com/seo-tools/wordpress/plugins/fv-top-level-cate
 Description: Removes the prefix from the URL for a category. For instance, if your old category link was <code>/category/catname</code> it will now be <code>/catname</code>
 Version: 1.9.1
 Author: Foliovision
-Author URI: http://foliovision.com/  
+Author URI: http://foliovision.com/
 Text Domain: fv_tlc
 Domain Path: /languages/
 */
@@ -17,91 +17,89 @@ add_action('edited_category','fv_top_level_categories_refresh_rules');
 add_action('delete_category','fv_top_level_categories_refresh_rules');
 
 function fv_top_level_categories_refresh_rules() {
-	add_option('fv_top_level_categories_rewrite_rules_flush', 'true');
+  add_option('fv_top_level_categories_rewrite_rules_flush', 'true');
 }
 register_deactivation_hook(__FILE__,'fv_top_level_categories_deactivate');
 
 function fv_top_level_categories_deactivate() {
-	remove_filter('category_rewrite_rules', 'fv_top_level_categories_refresh_rules'); // We don't want to insert our custom rules again
-	delete_option('fv_top_level_categories_rewrite_rules_flush');
+  remove_filter('category_rewrite_rules', 'fv_top_level_categories_refresh_rules'); // We don't want to insert our custom rules again
+  delete_option('fv_top_level_categories_rewrite_rules_flush');
 }
 
 // Remove category base
 add_action('init', 'fv_top_level_categories_permastruct',999999);
 function fv_top_level_categories_permastruct() {
-	global $wp_rewrite;
-	$wp_rewrite->extra_permastructs['category'][0] = '%category%';
-	
-	$bFound = false;
-	$aRules = get_option('rewrite_rules');
-	if( $aRules && count($aRules) > 0 ) {
-		foreach( $aRules AS $key => $value ) {
-			if( $key == 'fv-top-level-cat-tweaks-detector-235hnguh9hq46j0909iasn0zzdfsAJ' ) {
-				$bFound = true;
-				break;
-			}
-		}
-	}	
-	
-	if( !$bFound || get_option('fv_top_level_categories_rewrite_rules_flush') == 'true') {
-		flush_rewrite_rules();
-		delete_option('fv_top_level_categories_rewrite_rules_flush');
-	}	
+  global $wp_rewrite;
+  $wp_rewrite->extra_permastructs['category'][0] = '%category%';
+  
+  $bFound = false;
+  $aRules = get_option('rewrite_rules');
+  if( $aRules && count($aRules) > 0 ) {
+    foreach( $aRules AS $key => $value ) {
+      if( $key == 'fv-top-level-cat-tweaks-detector-235hnguh9hq46j0909iasn0zzdfsAJ' ) {
+        $bFound = true;
+        break;
+      }
+    }
+  }
+  
+  if( !$bFound || get_option('fv_top_level_categories_rewrite_rules_flush') == 'true') {
+    flush_rewrite_rules();
+    delete_option('fv_top_level_categories_rewrite_rules_flush');
+  }
 }
 
 // Add our custom category rewrite rules
 add_filter('category_rewrite_rules', 'fv_top_level_categories_rewrite_rules');
 function fv_top_level_categories_rewrite_rules($category_rewrite) {
-	//var_dump($category_rewrite); // For Debugging
+  //var_dump($category_rewrite); // For Debugging
   $bAMP = false;
   foreach( $category_rewrite AS $k => $v ) {
     if( stripos($k, '/amp') !== false ) {
       $bAMP = true;
     }
   }
-	
-	///  First we need to get full URLs of our pages
-	$pages = get_pages( 'number=0' );
-	$pages_urls = array();
+  
+  // First we need to get full URLs of our pages
+  $pages = get_pages( 'number=0' );
+  $pages_urls = array();
   foreach( $pages AS $pages_item ) {
     $pages_urls[] = trim( str_replace( get_bloginfo( 'url' ), '', get_permalink( $pages_item->ID ) ), '/' );
   }
-  ///
-	global $wp_rewrite;
-		
-	$category_rewrite=array();
-	$categories=get_categories(array('hide_empty'=>false));
-	foreach($categories as $category) {
-		$category_nicename = $category->slug;
-		if ( $category->parent == $category->cat_ID ) // recursive recursion
-			$category->parent = 0;
-		elseif ($category->parent != 0 )
-			$category_nicename = get_category_parents( $category->parent, false, '/', true ) . $category_nicename;
-		
-		/// Let's check if any of the category full URLs matches any of the pages
-		if( in_array( $category_nicename, $pages_urls ) ) {
-		  continue;
-		}
-		///
-		
-		
-		$category_rewrite['('.$category_nicename.')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'] = 'index.php?category_name=$matches[1]&feed=$matches[2]';
-		$category_rewrite['('.$category_nicename.')/'. $wp_rewrite->pagination_base .'/?([0-9]{1,})/?$'] = 'index.php?category_name=$matches[1]&paged=$matches[2]';
+
+  global $wp_rewrite;
+
+  $category_rewrite=array();
+  $categories=get_categories(array('hide_empty'=>false));
+  foreach($categories as $category) {
+    $category_nicename = $category->slug;
+    if ( $category->parent == $category->cat_ID ) // recursive recursion
+      $category->parent = 0;
+    elseif ($category->parent != 0 )
+      $category_nicename = get_category_parents( $category->parent, false, '/', true ) . $category_nicename;
+    
+    // Let's check if any of the category full URLs matches any of the pages
+    if( in_array( $category_nicename, $pages_urls ) ) {
+      continue;
+    }
+
+    $category_rewrite['('.$category_nicename.')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'] = 'index.php?category_name=$matches[1]&feed=$matches[2]';
+    $category_rewrite['('.$category_nicename.')/'. $wp_rewrite->pagination_base .'/?([0-9]{1,})/?$'] = 'index.php?category_name=$matches[1]&paged=$matches[2]';
     if( $bAMP ) {
       $category_rewrite['('.$category_nicename.')/amp/'. $wp_rewrite->pagination_base .'/?([0-9]{1,})/?$'] = 'index.php?amp&category_name=$matches[1]&paged=$matches[2]';
       $category_rewrite['('.$category_nicename.')/amp/?$'] = 'index.php?amp&category_name=$matches[1]'; 
     }
-		$category_rewrite['('.$category_nicename.')/?$'] = 'index.php?category_name=$matches[1]';    
-	}
-	// Redirect support from Old Category Base
-	$old_category_base = get_option('category_base') ? get_option('category_base') : 'category';
-	$old_category_base = trim($old_category_base, '/');
-	$category_rewrite[$old_category_base.'/(.*)$'] = 'index.php?category_redirect=$matches[1]';
-	
-	$category_rewrite['fv-top-level-cat-tweaks-detector-235hnguh9hq46j0909iasn0zzdfsAJ'] = 'index.php?fv-top-level-cat-tweaks-detector-235hnguh9hq46j0909iasn0zzdfsAJ=1';
-	
-	//var_dump($category_rewrite); // For Debugging
-	return $category_rewrite;
+    $category_rewrite['('.$category_nicename.')/?$'] = 'index.php?category_name=$matches[1]';    
+  }
+  // Redirect support from Old Category Base
+  $old_category_base = get_option('category_base') ? get_option('category_base') : 'category';
+  $old_category_base = trim($old_category_base, '/');
+  $category_rewrite[$old_category_base.'/(.*)$'] = 'index.php?category_redirect=$matches[1]';
+  
+  $category_rewrite['fv-top-level-cat-tweaks-detector-235hnguh9hq46j0909iasn0zzdfsAJ'] = 'index.php?fv-top-level-cat-tweaks-detector-235hnguh9hq46j0909iasn0zzdfsAJ=1';
+  
+  //var_dump($category_rewrite); // For Debugging
+  return $category_rewrite;
 }
 
 //Redirect to TL parent categ, if "Only use top-level categories in URLs." is on
@@ -110,8 +108,8 @@ function fv_top_level_categories_tlc_redirect( $link ) {
   if( FV_Top_Level_Cats::is_top_level_only() && is_single() ) {
     global $wp_query;
     $requested_url  = is_ssl() ? 'https://' : 'http://';
-		$requested_url .= $_SERVER['HTTP_HOST'];
-		$requested_url .= $_SERVER['REQUEST_URI'];
+    $requested_url .= $_SERVER['HTTP_HOST'];
+    $requested_url .= $_SERVER['REQUEST_URI'];
     
     $real_permalink = get_permalink($wp_query->queried_object_id);
     
@@ -121,48 +119,48 @@ function fv_top_level_categories_tlc_redirect( $link ) {
         wp_redirect( $real_permalink . $end_of_url[1], 301 );
       else
         wp_redirect( $real_permalink, 301 );
-      die();    
+      die();
     }
   }
-  
+
   return $link;
 }
 
 // Add 'category_redirect' query variable
 add_filter('query_vars', 'fv_top_level_categories_query_vars');
 function fv_top_level_categories_query_vars($public_query_vars) {
-	$public_query_vars[] = 'category_redirect';
-	return $public_query_vars;
+  $public_query_vars[] = 'category_redirect';
+  return $public_query_vars;
 }
 
 // Redirect if 'category_redirect' is set
 add_filter('request', 'fv_top_level_categories_request');
 function fv_top_level_categories_request($query_vars) {
-	//print_r($query_vars); // For Debugging
-	if(isset($query_vars['category_redirect'])) {
-		$catlink = trailingslashit(get_option( 'home' )) . user_trailingslashit( $query_vars['category_redirect'], 'category' );
-		status_header(301);
-		header("Location: $catlink");
-		exit();
-	}
-	return $query_vars;
+  //print_r($query_vars); // For Debugging
+  if(isset($query_vars['category_redirect'])) {
+    $catlink = trailingslashit(get_option( 'home' )) . user_trailingslashit( $query_vars['category_redirect'], 'category' );
+    status_header(301);
+    header("Location: $catlink");
+    exit();
+  }
+  return $query_vars;
 }
 
 add_filter('category_link', 'top_level_cats_remove_cat_base');
 function top_level_cats_remove_cat_base($link) {
-	$category_base = get_option('category_base');
+  $category_base = get_option('category_base');
 
-	// WP uses "category/" as the default
-	if ($category_base == '')
-		$category_base = 'category';
+  // WP uses "category/" as the default
+  if ($category_base == '')
+    $category_base = 'category';
 
-	// Remove initial slash, if there is one (we remove the trailing slash in the regex replacement and don't want to end up short a slash)
-	if (substr($category_base, 0, 1) == '/')
-		$category_base = substr($category_base, 1);
+  // Remove initial slash, if there is one (we remove the trailing slash in the regex replacement and don't want to end up short a slash)
+  if (substr($category_base, 0, 1) == '/')
+    $category_base = substr($category_base, 1);
 
-	$category_base .= '/';
+  $category_base .= '/';
 
-	return preg_replace('|' . $category_base . '|', '', $link, 1);
+  return preg_replace('|' . $category_base . '|', '', $link, 1);
 }
 
 
@@ -172,7 +170,7 @@ function fv_top_level_cats_post_link_category_top_level_only( $cat ) {
   if( !FV_Top_Level_Cats::is_category_permalinks() ) {
     return $cat;  
   } 
- 
+
   while( FV_Top_Level_Cats::is_top_level_only() && $cat->parent != 0 ) {
     $cat = get_term_by( 'id', $cat->parent, 'category' );
   }
@@ -319,9 +317,9 @@ class FV_Top_Level_Cats {
   
   
     
-  function load_languages(){	
-	// Localization
-        load_plugin_textdomain('fv_tlc', false, dirname(plugin_basename(__FILE__)) . "/languages");	
+  function load_languages(){
+    // Localization
+    load_plugin_textdomain('fv_tlc', false, dirname(plugin_basename(__FILE__)) . "/languages");
   }
   
   
@@ -346,11 +344,11 @@ class FV_Top_Level_Cats {
     } else {
       return false;
     }
-  }  
+  }
   
   
   
-	
+  
   function options_panel() {
 
     if (!empty($_POST)) :
@@ -424,15 +422,15 @@ class FV_Top_Level_Cats {
                     <?php _e('Only use top-level categories in URLs.','fv_tlc') ; ?>
                   </label>
                 </td>
-              </tr>                
+              </tr>
               <tr>
                 <td>
                   <label for="category-allow-enabled">
                     <input type="checkbox" name="category-allow-enabled" id="category-allow-enabled" value="1" <?php if(isset($options['category-allow-enabled'])) { if( $options['category-allow-enabled'] ) echo 'checked="checked"'; }?> />
                     <?php _e('Only allow following categories in URLs:','fv_tlc' );?>
-                  </label>                  
+                  </label>
                   <blockquote>
-                    <ul id="category-allow"> <?php  
+                    <ul id="category-allow"> <?php
                         if( isset($options['category-allow']) ) {
                             $descendants_and_self = $options['category-allow'];
                         }else{
@@ -443,7 +441,7 @@ class FV_Top_Level_Cats {
                     </ul>
                   </blockquote>
                 </td>
-              </tr>                                       
+              </tr>
             </table>
             <p>
               <input type="submit" name="fv_top_level_cats_submit" class="button-primary" value="<?php _e('Save Changes','fv_tlc'); ?>" />
@@ -452,7 +450,7 @@ class FV_Top_Level_Cats {
         </div>
         <p><?php _e('Are you having any problems or questions? Use our <a target="_blank" href="http://foliovision.com/support/fv-top-level-categories/">support forums</a>.','fv_tlc'); ?></p>
       </div>
-         
+
     </form>
   <?php else : ?>
     <p><?php _e('Since you are not using %category% in your post permalinks, there is nothing to adjust.','fv_tlc'); ?></p>
@@ -464,7 +462,6 @@ class FV_Top_Level_Cats {
 <?php
   }
   
-  
 }
 
 $FV_Top_Level_Cats = new FV_Top_Level_Cats;
@@ -475,6 +472,6 @@ function fv_top_level_categories_settings_link($links) {
   array_unshift($links, $settings_link); 
   return $links; 
 }
- 
+
 $plugin = plugin_basename(__FILE__); 
 add_filter("plugin_action_links_$plugin", 'fv_top_level_categories_settings_link' );
