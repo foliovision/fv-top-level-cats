@@ -110,19 +110,3 @@ Make sure your categories have unique slugs - watch out for pages with the same 
 
 = Version 1.0.1 =
 * original version
-
-== Testing ==
-
-1. Create a category called "computers"
-
-1.1. Create second category called "apple"
-
-1.2. Make "apple" a child of "computers"
-
-1.3. Create a post called "Macbook Pro"
-
-1.4. Assign it to "apple" category
-
-1.5. Category URL should be http://example.com/computers/apple/
-
-1.6. If you navigate to http://example.com/category/computers/apple/ you should be redirected to http://example.com/computers/apple/
