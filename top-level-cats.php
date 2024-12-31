@@ -409,9 +409,11 @@ class FV_Top_Level_Cats {
       <?php wp_nonce_field('fv_top_level_cats') ?>
       <div id="poststuff" class="ui-sortable">
         <div class="postbox">
-          <h3>
-          <?php _e('Adjust categories in your post URLs','fv_tlc') ?>
-          </h3>
+          <div class="postbox-header">
+            <h2 class="hndle ui-sortable-handle">
+              <?php _e('Adjust categories in your post URLs','fv_tlc') ?>
+            </h2>
+          </div>
           <div class="inside">
             <table class="form-table">
               <tr>
