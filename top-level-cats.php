@@ -190,10 +190,10 @@ function fv_top_level_cats_post_link_category_restrict( $cat ) {
   $aArgs = func_get_args();
 
   $aAllowedCats = FV_Top_Level_Cats::get_allowed_cats();
-  if( !count($aAllowedCats) ) {
+  if ( empty( $aAllowedCats ) ) {
     return $cat;
   }
-  
+
   //  check if the main category is allowed
   if( in_array( $cat->term_id, $aAllowedCats ) ) {
     return $cat;
@@ -232,7 +232,7 @@ function fv_top_level_category_filter( $aCategories ) {
   if( class_exists('FV_Top_Level_Cats') && method_exists('FV_Top_Level_Cats','get_allowed_cats') ) {
     
     $aAllowedCats = FV_Top_Level_Cats::get_allowed_cats();
-    if( !count($aAllowedCats) ) {
+    if ( empty( $aAllowedCats ) ) {
       return $aCategories;
     }
     
